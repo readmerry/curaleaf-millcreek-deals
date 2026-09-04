@@ -28,13 +28,13 @@ jobs:
       - name: Install Puppeteer
         run: npm install
 
-      - name: Install Chrome dependencies
-        run: npx puppeteer browsers install chrome --install-deps
+      - name: Verify preinstalled Chrome
+        run: google-chrome --version
 
       - name: Scrape the live Millcreek menu
         id: scrape
         continue-on-error: true
-        run: npm run scrape
+        run: PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome npm run scrape
 
       - name: Upload reports or failure diagnostics
         if: always()
