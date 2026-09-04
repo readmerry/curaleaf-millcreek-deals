@@ -1,0 +1,16 @@
+{
+  "name": "curaleaf-millcreek-deals",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Live Curaleaf Millcreek menu scraper and deal ranker",
+  "scripts": {
+    "scrape": "node curaleaf-best-deals.js",
+    "test": "node --test test/curaleaf-best-deals.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "puppeteer": "25.10.0"
+  }
+}

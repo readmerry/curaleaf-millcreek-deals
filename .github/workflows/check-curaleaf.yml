@@ -1,0 +1,50 @@
+name: Check Curaleaf Millcreek Deals
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: curaleaf-millcreek-deals
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    name: Read live menu and rank deals
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out scraper
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Puppeteer
+        run: npm install
+
+      - name: Install Chrome dependencies
+        run: npx puppeteer browsers install chrome --install-deps
+
+      - name: Scrape the live Millcreek menu
+        id: scrape
+        continue-on-error: true
+        run: npm run scrape
+
+      - name: Upload reports or failure diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: curaleaf-results-${{ github.run_number }}
+          path: curaleaf-results/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Mark unsuccessful scrape
+        if: steps.scrape.outcome == 'failure'
+        run: exit 1
