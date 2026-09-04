@@ -28,7 +28,7 @@ const path = require("node:path");
 
 const MILLCREEK_URL =
   "https://curaleaf.com/shop/pennsylvania/curaleaf-pa-millcreek/menu";
-const SCRAPER_VERSION = "2026-09-04-github-actions";
+const SCRAPER_VERSION = "2026-09-04-github-actions-v2";
 
 const sleep = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -512,7 +512,13 @@ async function main() {
       // Explicitly wait for the client-rendered product cards. networkidle2 can
       // be delayed by analytics, so it is treated as a best-effort extra wait.
       await dismissOverlays(page);
-      await page.waitForSelector("a[id^='product-']", { visible: true });
+      try {
+        await page.waitForSelector("a[id^='product-']", { visible: true, timeout: number === 1 ? options.timeout : 15_000 });
+      } catch (error) {
+        if (number === 1) throw error;
+        console.log(`  No product cards on page ${number}; reached the end of the menu.`);
+        break;
+      }
       try {
         await page.waitForNetworkIdle({ idleTime: 750, timeout: 10_000 });
       } catch {
