@@ -1,16 +1,16 @@
 {
-  "name": "curaleaf-millcreek-deals",
-  "version": "1.0.0",
+  "name": "pa-dispensary-deals",
+  "version": "2.0.0",
   "private": true,
-  "description": "Live Curaleaf Millcreek menu scraper and deal ranker",
+  "description": "Scrapes Curaleaf Millcreek or RISE Erie on Lake (PA medical menus) and ranks deals per category into a CSV",
   "scripts": {
-    "scrape": "node curaleaf-best-deals.js",
-    "test": "node --test test/curaleaf-best-deals.test.js"
+    "scrape": "node scrape.js",
+    "test": "node --test test/"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
-    "puppeteer": "25.10.0"
+    "puppeteer": "24.10.0"
   }
 }
